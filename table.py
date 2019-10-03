@@ -30,7 +30,7 @@ class Table(object):
 		pass
 
 	def mont_arg_list(self, rule, chain, met):
-		args = ["iptables", met, chain]
+		args = ["iptables", "-t", self.name, met, chain]
 
 		if rule.in_interface is not None:
 			args.append("-i")
@@ -64,7 +64,7 @@ class Table(object):
 			args.append("-m")
 			args.append(rule.match)
 
-		if rule.ctstates is not None:
+		if rule.ctstates != []:
 			args.append("--ctstate")
 			args.append(",".join(rule.ctstates))
 
@@ -72,4 +72,9 @@ class Table(object):
 			args.append("-j")
 			args.append(rule.target)
 
+		if rule.to is not None:
+			args.append("--to")
+			args.append(rule.to)
+
+		print(args)
 		return args

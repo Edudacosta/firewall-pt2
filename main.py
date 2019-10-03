@@ -11,26 +11,53 @@ def main():
 	# Tabela Filter
 	filter_table = Table("filter")
 
-	# Regras da Tabela Filter
+	# Regras
 	ssh_input_public_interface = Rule(name="SSH_PUBLIC_INTERFACE",
-							in_interface="eth1",
-							protocol="tcp",
-							dport="13508",
-							match="conntrack",
-							ctstates=["NEW", "ESTABLISHED"],
-							target="ACCEPT")
+										in_interface="eth0",
+										protocol="tcp",
+										dport="13508",
+										match="conntrack",
+										ctstates=["NEW", "ESTABLISHED"],
+										target="ACCEPT")
 
 	ssh_input_private_interface = Rule(name="SSH_PRIVATE_INTERFACE",
-							in_interface="eth0",
-							protocol="tcp",
-							sport="22",
-							match="conntrack",
-							ctstates=["NEW, ESTABLISHED"],
-							target="ACCEPT")
+										in_interface="eth1",
+										protocol="tcp",
+										sport="22",
+										match="conntrack",
+										ctstates=["NEW", "ESTABLISHED"],
+										target="ACCEPT")
 
 
-	# filter_table.append_rule(ssh_public_interface, "INPUT")
-	# filter_table.delete_rule(ssh_public_interface, "INPUT")	
+	# Aplicando regras para INPUT
+	# filter_table.append_rule(ssh_input_public_interface, "INPUT")
+	# filter_table.delete_rule(ssh_input_public_interface, "INPUT")
+	# filter_table.append_rule(ssh_input_private_interface, "INPUT")
+	# filter_table.delete_rule(ssh_input_public_interface, "INPUT")
+
+	input_policy = Rule(name="FILTER_INPUT_POLICY",
+						target="ACCEPT")
+	filter_table.set_policy(input_policy, "INPUT")
+
+
+	# Tabela NAT
+	nat_table = Table("nat")
+
+	# Regras NAT
+	masquerade_rule = Rule(name="MAQUERADE_RULE",
+							out_interface="eth0",
+							target="MASQUERADE")
+
+	nat_table.append_rule(masquerade_rule, "POSTROUTING")
+
+	dnat_rule = Rule(name="DNAT_RULE",
+						in_interface="eth0",
+						protocol="tcp",
+						dport="13508",
+						target="DNAT",
+						to="192.168.2.2:22")
+
+	nat_table.append_rule(dnat_rule, "PREROUTING")
 
 	# Regras para HTTP e HTTPS
 	# http_input_rule = Rule(name="HTTP_INPUT_RULE",

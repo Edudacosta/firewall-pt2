@@ -1,7 +1,7 @@
 class Rule(object):
 	"""docstring for Rule"""
 	def __init__(self, number=None, name=None, protocol=None, sport=None, dport=None, in_interface=None, 
-					out_interface=None, source=None, destination=None, match=None, target=None, ctstates=[]):
+					out_interface=None, source=None, destination=None, match=None, target=None, to=None, ctstates=[]):
 		self.number = number
 		self.name = name
 		self.protocol = protocol
@@ -14,3 +14,4 @@ class Rule(object):
 		self.match = match
 		self.target = target
 		self.ctstates = ctstates
+		self.to = to
