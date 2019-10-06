@@ -29,7 +29,7 @@ def main():
 
 	# Regras SSH
 	ssh_public_interface = Rule(name="SSH_PUBLIC_INTERFACE",
-										in_interface="eth0",
+										# in_interface="eth0",
 										protocol="tcp",
 										dport=dport, # Padrão=22. Não usada.
 										match="conntrack",
@@ -37,12 +37,13 @@ def main():
 										target="ACCEPT")
 
 	ssh_private_interface = Rule(name="SSH_PRIVATE_INTERFACE",
-										in_interface="eth1",
+										# in_interface="eth1",
 										protocol="tcp",
 										sport="22",
 										match="conntrack",
 										ctstates=["NEW", "ESTABLISHED"],
 										target="ACCEPT")
+
 
 	# Aplicação das regras para SSH
 
@@ -64,7 +65,7 @@ def main():
 	http_private_interface = Rule(name="HTTP_PRIVATE_INTERFACE",
 									in_interface="eth1",
 									protocol="tcp",
-									dport="80",
+									sport="80",
 									match="conntrack",
 									ctstates=["NEW","ESTABLISHED"],
 									target="ACCEPT")
@@ -73,7 +74,7 @@ def main():
 	https_private_interface = Rule(name="HTTPS_PUBLIC_INTERFACE",
 									in_interface="eth1",
 									protocol="tcp",
-									dport="443",
+									sport="443",
 									match="conntrack",
 									ctstates=["NEW", "ESTABLISHED"],
 									target="ACCEPT")
@@ -101,7 +102,7 @@ def main():
 	smtp_private_interface = Rule(name="SMTP_PRIVATE_INTERFACE",
 								in_interface="eth1",
 								protocol="tcp",
-								dport="25",
+								sport="25",
 								match="conntrack",
 								ctstates=["NEW,ESTABLISHED"],
 								target="ACCEPT")

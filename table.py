@@ -18,7 +18,7 @@ class Table(object):
 
 	# Define a regra padrao da tabela em um determinada corrente
 	def set_policy(self, rule, chain):
-		args = ["iptables", "-P", chain]
+		args = ["iptables", "-P", chain, rule.target]
 		subprocess.call(args)
 
 	# Insere uma regra em uma linha (numero) especifica da tabela
