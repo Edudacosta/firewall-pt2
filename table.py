@@ -4,11 +4,12 @@ class Table(object):
 	"""docstring for Table"""
 	def __init__(self, name):
 		self.name = name
+		self.rules = []
 
 	# Adiciona uma nova regra no final da tabela
 	def append_rule(self, rule, chain):
 		args = self.mont_arg_list(rule, chain, "-A")
-		subprocess.call(args)	
+		subprocess.call(args)
 
 	# Exclui uma regra da tabela
 	def delete_rule(self, rule, chain):
@@ -18,8 +19,7 @@ class Table(object):
 	# Define a regra padrao da tabela em um determinada corrente
 	def set_policy(self, rule, chain):
 		args = ["iptables", "-P", chain]
-		args.append(rule.target)
-		subprocess.call(args)	
+		subprocess.call(args)
 
 	# Insere uma regra em uma linha (numero) especifica da tabela
 	def insert_rule(self, rule, number):
@@ -76,5 +76,4 @@ class Table(object):
 			args.append("--to")
 			args.append(rule.to)
 
-		print(args)
 		return args
