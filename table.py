@@ -9,7 +9,9 @@ class Table(object):
 	# Adiciona uma nova regra no final da tabela
 	def append_rule(self, rule, chain):
 		args = self.mont_arg_list(rule, chain, "-A")
-		subprocess.call(args)
+		# subprocess.call(args)
+		# print(args)
+		print(" ".join(args))
 
 	# Exclui uma regra da tabela
 	def delete_rule(self, rule, chain):
@@ -60,9 +62,9 @@ class Table(object):
 			args.append("-d")
 			args.append(rule.destination)
 
-		if rule.match is not None:
+		if rule.module is not None:
 			args.append("-m")
-			args.append(rule.match)
+			args.append(rule.module)
 
 		if rule.ctstates != []:
 			args.append("--ctstate")
